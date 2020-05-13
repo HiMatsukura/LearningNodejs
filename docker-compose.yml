@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  webserver:
+    build: ./docker
+    image: node-express-dev:1.0
+    ports:
+      - 8080:3000
+    volumes:
+      - /app2:/usr/src/app2
+    tty: true
+    stdin_open: true
+    command: /bin/sh
