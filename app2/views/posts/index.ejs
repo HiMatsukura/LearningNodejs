@@ -1,0 +1,19 @@
+<!-- includeの書き方が動画と異なることに注意-->
+<!-- 動画と同じようにしたい場合はgulp-ejsプラグインをインストールする必要がありそう-->
+<% include('../header', {path: '../'}) %>
+<h1>Posts</h1>
+<ul>
+	<% for (var i=0; i<posts.length; i++) { %>
+		<li>
+			<a href="/posts/<%= i %>"><%= posts[i].title %></a>
+			<a href="/posts/<%= i %>/edit">[Edit]</a>
+			<form method="post" action="/posts/<%= i %>?_method=DELETE">
+				<input type="submit" value="del">
+				<input type="hidden" name="_csrf" value="<%= csrftoken %>">
+				<input type="hidden" name="id" value="<%= i %>">
+			</form>
+		</li>
+	<% } %>
+</ul>
+<p><a href="/posts/new">Add new</a></p>
+<% include('../footer', {path: '../'}) %>
