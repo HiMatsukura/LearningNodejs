@@ -11,3 +11,5 @@ services:
     tty: true
     stdin_open: true
     command: /bin/sh
+    environment:
+      CHOKIDAR_USEPOLLING: 1

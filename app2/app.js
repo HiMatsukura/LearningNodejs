@@ -9,7 +9,7 @@ var methodOverride = require('method-override');
 
 
 app.set('views', __dirname + '/views');
-app.set('view engin', 'ejs');
+app.set('view engine', 'ejs');
 
 //middleware
 app.use(bodyParser.json());
@@ -36,5 +36,5 @@ app.delete('/posts/:id', post.destroy); //削除
 
 
 app.listen(3000);
-console.log("server starting...")
+console.log("server starting...");
 
