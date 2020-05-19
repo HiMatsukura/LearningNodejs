@@ -1,13 +1,21 @@
 FROM node:13
 
-# node.js ‚ÌŠÂ‹«•Ï”‚ğ’è‹`‚·‚é
-# –{”ÔŠÂ‹«‚Å‚Í production
+# node.js ã®ç’°å¢ƒå¤‰æ•°ã‚’å®šç¾©ã™ã‚‹
+# æœ¬ç•ªç’°å¢ƒã§ã¯ production
 ENV NODE_ENV=development
 
 WORKDIR /usr/src/app2
 
-# —Œ`‚ğ¶¬‚·‚é‚Ì‚É•K—v‚ÈƒpƒbƒP[ƒW‚ÌƒCƒ“ƒXƒg[ƒ‹
+# é››å½¢ã‚’ç”Ÿæˆã™ã‚‹ã®ã«å¿…è¦ãªãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
+# package-lock.jsonãŒã‚ã‚Œã°ä¸è¦ã ãŒã€å¿µã®ãŸã‚
 RUN npm install -g express-generator
+RUN npm install
+RUN npm install nodemon -g
+RUN npm install morgan
+RUN npm install body-parser
+RUN npm install ejs
+RUN npm install connect method-override
+RUN npm install cookie-parser express-session csurf
 
-# ƒ|[ƒg3000”Ô‚ğŠJ•ú‚·‚é
+# ãƒãƒ¼ãƒˆ3000ç•ªã‚’é–‹æ”¾ã™ã‚‹
 EXPOSE 3000
