@@ -8,8 +8,9 @@ WORKDIR /usr/src/app2
 
 # 雛形を生成するのに必要なパッケージのインストール
 # package-lock.jsonがあれば不要だが、念のため
-RUN npm install -g express-generator
 RUN npm install
+RUN npm install express
+RUN npm install express-generator
 RUN npm install nodemon -g
 RUN npm install morgan
 RUN npm install body-parser
