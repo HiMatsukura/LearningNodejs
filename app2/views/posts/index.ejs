@@ -7,7 +7,7 @@
         <a href = "/posts/<%= i %>"><%= posts[i].title %></a>
         <a href = "/posts/<%= i %>/edit">[Edit]</a>
         <form method="post" action="/posts/<%= i %>?_method=DELETE">
-        <input type="submit" value="del">
+        <input type="submit" value="del" onclick="return confirmFunction()">
         <input type="hidden" name="_csrf" value="<%= csrftoken %>">
         <input type="hidden" name="id" value="<%= i %>">
 
@@ -15,5 +15,22 @@
     </li>
     <% } %>
 </ul>
+
+<script>
+
+    function confirmFunction() {
+        var message = "削除しますか？";
+        //「OK」ボタンをクリックした時
+        if(confirm(message)) {
+            alert( "削除しました。");
+            return true;
+        //「キャンセル」ボタンをクリックした時
+        } else {
+            alert( "削除をキャンセルしました。");
+            return false;
+        }
+    }
+</script>
+
 <p><a href="/posts/new">Add new</a></p>
 <% include ('../footer' , {path: '../'}) %>
