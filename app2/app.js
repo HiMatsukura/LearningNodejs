@@ -38,6 +38,7 @@ app.use(function(err, req, res, next){
 });
 
 
+
 //routing
 app.get('/', post.index); //記事一覧表示
 app.get('/posts/:id([0-9]+)', post.show); //詳細画面
@@ -46,6 +47,7 @@ app.post('/posts/create', post.create); //記事が生成されるルーティ�
 app.get('/posts/:id/edit', post.edit); //更新画面 編集フォームを表示
 app.put('/posts/:id', post.update); //編集フォームの投稿先
 app.delete('/posts/:id', post.destroy); //削除
+
 
 
 
