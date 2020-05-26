@@ -1,0 +1,12 @@
+<% include ('../header' , {path: '../'}) %>
+<h1>Add new</h1>
+<form method="post" action="/posts/create">
+<input type="text" name="title">
+<input type="text" name="body">
+<input type="hidden" name="_csrf" value="<%= csrftoken %>">
+<input type="submit" name="add!">
+</form>
+
+
+<p><a href="/">Go Back</a></p>
+<% include ('../footer' , {path: '../'}) %>
