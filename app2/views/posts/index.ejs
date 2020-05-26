@@ -7,7 +7,8 @@
 		<li>
 			<a href="/posts/<%= i %>"><%= posts[i].title %></a>
 			<a href="/posts/<%= i %>/edit">[Edit]</a>
-			<form method="post" action="/posts/<%= i %>?_method=DELETE">
+			<!-- formタグにonsubmit属性を付与する。trueの場合のみactionを実行させる。 -->
+			<form method="post" action="/posts/<%= i %>?_method=DELETE" onsubmit="return delconfirm()">
 				<input type="submit" value="del">
 				<input type="hidden" name="_csrf" value="<%= csrftoken %>">
 				<input type="hidden" name="id" value="<%= i %>">
@@ -16,4 +17,18 @@
 	<% } %>
 </ul>
 <p><a href="/posts/new">Add new</a></p>
+<script>
+	function delconfirm(){
+	    <!-- cinfirmで本当に削除するか確認する -->
+	    if(confirm('記事を削除してよろしいですか？')){
+	        <!-- OK押下でtureを返す。削除を実行することをalertで通知 -->
+	        alert('削除を実行します');
+	        return true;
+	    } else {
+	        <!-- キャンセル押下でfalseを返す。削除をキャンセルすることをalertで通知 -->
+	        alert('キャンセルしました');
+	        return false;
+	    }
+    };
+</script>
 <% include('../footer', {path: '../'}) %>
