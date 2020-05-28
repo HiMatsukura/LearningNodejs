@@ -3,8 +3,14 @@ let posts = [
     {title: 'title1', body: 'body1'},
     {title: 'title2', body: 'body2'}
 ];
+// Twitter用
+var twitter = require("twitter");
+var fs = require("fs");
+var client = new twitter(JSON.parse(fs.readFileSync("secret.json","utf-8")));
+
 exports.index = function(req, res) {
-    res.render('posts/index', {posts: posts});
+    let tweets1 = getTweet();
+    res.render('posts/index', {posts: posts, tweets2: tweets1});
 };
 exports.show = function(req, res) {
     res.render('posts/show', {post: posts[req.params.id]});
@@ -71,10 +77,55 @@ exports.destroy = function(req, res, next) {
     }
 };
 exports.create = function(req, res) {
-    let post = {
-        title: req.body.title,
-        body: req.body.body
-    };
-    posts.push(post);
-    res.redirect('/');
+    const tmptitle = req.body.title;
+    const tmpbody  = req.body.body;
+    const tmpposts = {title: tmptitle, body: tmpbody};
+
+    if(brankcheck(tmptitle, tmpbody)){
+        res.render('posts/new');
+    } else {
+        let post = tmpposts;
+        posts.push(post);
+        res.redirect('/');
+    }
 };
+
+let brankcheck = function(strt, strb){
+    // textbox内の空文字、nullが存在するか判定する
+    // true : 入力あり
+    // false: 空文字、またはnull
+    let blankflg = false;
+    if(strt == null || strt == ''){
+        console.log("title is brank...");
+        blankflg = true;
+    }
+    if(strb == null || strb == ''){
+        console.log("body is brank...");
+        blankflg = true;
+    }
+    return blankflg;
+};
+
+
+function getTweet() {
+    let params = {
+      screen_name: 'nhk_seikatsu',
+      count: 10,
+      include_rts: false,
+      exclude_replies: true
+    };
+    let rtntw = [];
+    client.get('statuses/user_timeline', params, function(error, tweets, response) {
+      if (!error) {
+        for (let i = 0; i < tweets.length; i++) {
+          console.log(tweets[i].text);
+          fs.appendFileSync("timeline.json",JSON.stringify(tweets[i].text) + "\n","utf-8");
+          rtntw = {text: tweets[i].text};
+        }
+      } else {
+        console.log(error);
+      }
+    });
+    //const rtntw = JSON.parse(fs.readFileSync("timeline.json","utf-8"));
+    return rtntw;
+  }

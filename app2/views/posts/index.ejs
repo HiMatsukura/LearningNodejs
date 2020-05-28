@@ -17,6 +17,15 @@
 	<% } %>
 </ul>
 <p><a href="/posts/new">Add new</a></p>
+<br><br><br>
+<h1>Twitter</h1>
+<ul>
+	<% for (var i=0; i<tweets2.length; i++) { %>
+		<li>
+			<%= tweets2[i].text %></a>
+		</li>
+	<% } %>
+</ul>
 <script>
 	function delconfirm(){
 	    <!-- cinfirmで本当に削除するか確認する -->
