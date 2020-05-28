@@ -31,46 +31,60 @@ exports.create = function(req, res){
 };
 
 exports.edit = function(req, res){
-
-
     res.render('posts/edit', {post: posts[req.params.id], id: req.params.id}); //編集しているIDを渡す json形式のデータで値を渡す
-
-
 };
 
+
 exports.update = function(req, res, next){
+    if(req.body.id !== req.params.id){
+        next(new Error('ID not valid'));
+    }else{
+        posts[req.body.id] = {
+            title: req.body.title,
+            body: req.body.body
+        };
+        res.redirect('/');
+    }   
+    
+}; 
+
+exports.pre = function(req, res, next){
     
     let EditFlg = 0;
+    let tmpposts = {title: req.body.title, body: req.body.body};
 
-    if(req.body.id !== req.params.id){
-        next(new Error('ID not valid'));    
-    }else{
-        //req.body.title 変更後の値
-        //posts[req.params.id].title 変更前の値　
-        if(req.body.title === posts[req.params.id].title){
-            console.log('titleに変更はありません。');
-            EditFlg = 1;
-        }
+    //新規登録画面の時
+    if(req.params.id === undefined){
+        res.render('posts/preview', {post: tmpposts, id: "create"}); //プレビュー画面へ移動
 
-        //req.body.body 変更後の値
-        //posts[req.params.id].body 変更前の値　
-        if(req.body.body === posts[req.params.id].body){
-            console.log('bodyに変更はありません。');
-            EditFlg = 1;
-        }
+    }else{//編集画面の時
 
-        
-        if(EditFlg){
-            let tmpposts = {title: req.body.title, body: req.body.body};
+        if(req.body.id !== req.params.id){
+            next(new Error('ID not valid'));    
+        }else{
+            //req.body.title 変更後の値
+            //posts[req.params.id].title 変更前の値　
+            if(req.body.title === posts[req.params.id].title){
+                console.log('titleに変更はありません。');
+                EditFlg = 1;
+            }
+
+            //req.body.body 変更後の値
+            //posts[req.params.id].body 変更前の値　
+            if(req.body.body === posts[req.params.id].body){
+                console.log('bodyに変更はありません。');
+                EditFlg = 1;
+            }
+
             
-            res.render('posts/edit', {post: tmpposts, id: req.body.id}); //edit画面再表示
-        }//titleとbodyに変更があったときページ遷移する
-        else{
-            posts[req.body.id] = {
-                title: req.body.title,
-                body: req.body.body
-            };
-            res.redirect('/');
+            if(EditFlg){
+                
+                res.render('posts/edit', {post: tmpposts, id: req.body.id}); //edit画面再表示
+            }//titleとbodyに変更があったときページ遷移する
+            else{
+
+                res.render('posts/preview', {post: tmpposts, id: req.body.id}); //プレビュー画面へ移動
+            }
         }
     }
     

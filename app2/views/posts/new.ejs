@@ -1,6 +1,6 @@
 <% include ('../header' , {path: '../'}) %>
 <h1>Add new</h1>
-<form method="post" action="/posts/create">
+<form method="post" action="/posts/preview">
 <input type="text" name="title">
 <input type="text" name="body">
 <input type="hidden" name="_csrf" value="<%= csrftoken %>">

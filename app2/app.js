@@ -45,8 +45,13 @@ app.get('/posts/:id([0-9]+)', post.show); //詳細画面
 app.get('/posts/new', post.new); //新規作成フォームを表示するルーティング
 app.post('/posts/create', post.create); //記事が生成されるルーティング
 app.get('/posts/:id/edit', post.edit); //更新画面 編集フォームを表示
-app.put('/posts/:id', post.update); //編集フォームの投稿先
+app.put('/posts/:id', post.pre); //プレビュー画面(編集画面から)
 app.delete('/posts/:id', post.destroy); //削除
+
+app.post('/posts/preview', post.pre); //プレビュー画面(追加画面から)
+app.put('/posts/:id([0-9]+)/update', post.update); //更新して一覧画面を表示(編集画面から)
+app.put('/posts/:id/update', post.create); //更新して一覧画面を表示(追加画面から)
+
 
 
 
