@@ -51,22 +51,12 @@ exports.update = function(req, res, next){
 exports.pre = function(req, res, next){
     
     let editFlg = 0;
-    let addFlg = 0;
     let tmpposts = {title: req.body.title, body: req.body.body};
 
     //新規登録画面の時
     if(req.params.id === undefined){
-        if(!req.body.title){
-            addFlg = 1;
-            console.log(titleMg());
-        }
 
-        if(!req.body.body){
-            addFlg = 1;
-            console.log(bodyMg());
-        }
-        
-        if(addFlg){
+        if(addCheck(req.body.title, req.body.body)){
             res.render('posts/new', {post: tmpposts, id: "create"}); //新規登録画面再表示
         }//titleとbodyに入力があったときページ遷移する
         else{
@@ -81,22 +71,8 @@ exports.pre = function(req, res, next){
         if(req.body.id !== req.params.id){
             next(new Error('ID not valid'));    
         }else{
-            //req.body.title 変更後の値
-            //posts[req.params.id].title 変更前の値　
-            if(req.body.title === posts[req.params.id].title){
-                console.log(titleMg());
-                editFlg = 1;
-            }
-
-            //req.body.body 変更後の値
-            //posts[req.params.id].body 変更前の値　
-            if(req.body.body === posts[req.params.id].body){
-                console.log(bodyMg());
-                editFlg = 1;
-            }
-
             
-            if(editFlg){
+            if(editCheck(req.body.title, req.body.body, posts[req.params.id].title, posts[req.params.id].body)){
                 
                 res.render('posts/edit', {post: tmpposts, id: req.body.id}); //edit画面再表示
             }//titleとbodyに変更があったときページ遷移する
@@ -120,13 +96,50 @@ exports.destroy = function(req, res, next){
     }
 }; 
 
-let titleMg = function(){
-    const tmg = "titleを入力もしくは変更してください"
-    return tmg;
+let addCheck = function(title, body){
+
+    let addFlg = 0;
+
+    const tmg = "titleを入力してください"
+    const bmg = "bodyを入力してください"
+    
+    if(!title){
+        addFlg = 1;
+        console.log(tmg);
+        
+    }
+
+    if(!body){
+        addFlg = 1;
+        console.log(bmg);
+    }
+
+    return addFlg;
+
 }
 
-let bodyMg = function(){
-    const bmg = "bodyを入力もしくは変更してください"
-    return bmg;
+let editCheck = function(title, body, oldTitle, oldBody){
+
+    let editFlg = 0;
+
+    const tmg = "titleを変更してください"
+    const bmg = "bodyを変更してください"
+    
+    if(title === oldTitle){
+        editFlg = 1;
+        console.log(tmg);
+        
+    }
+
+    if(body === oldBody){
+        editFlg = 1;
+        console.log(bmg);
+    }
+
+    return editFlg;
+
 }
+
+
+
 
