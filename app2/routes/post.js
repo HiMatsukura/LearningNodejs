@@ -50,12 +50,31 @@ exports.update = function(req, res, next){
 
 exports.pre = function(req, res, next){
     
-    let EditFlg = 0;
+    let editFlg = 0;
+    let addFlg = 0;
     let tmpposts = {title: req.body.title, body: req.body.body};
 
     //新規登録画面の時
     if(req.params.id === undefined){
-        res.render('posts/preview', {post: tmpposts, id: "create"}); //プレビュー画面へ移動
+        if(!req.body.title){
+            addFlg = 1;
+            console.log(titleMg());
+        }
+
+        if(!req.body.body){
+            addFlg = 1;
+            console.log(bodyMg());
+        }
+        
+        if(addFlg){
+            res.render('posts/new', {post: tmpposts, id: "create"}); //新規登録画面再表示
+        }//titleとbodyに入力があったときページ遷移する
+        else{
+            res.render('posts/preview', {post: tmpposts, id: "create"}); //プレビュー画面へ移動
+        }
+        
+        
+        
 
     }else{//編集画面の時
 
@@ -65,19 +84,19 @@ exports.pre = function(req, res, next){
             //req.body.title 変更後の値
             //posts[req.params.id].title 変更前の値　
             if(req.body.title === posts[req.params.id].title){
-                console.log('titleに変更はありません。');
-                EditFlg = 1;
+                console.log(titleMg());
+                editFlg = 1;
             }
 
             //req.body.body 変更後の値
             //posts[req.params.id].body 変更前の値　
             if(req.body.body === posts[req.params.id].body){
-                console.log('bodyに変更はありません。');
-                EditFlg = 1;
+                console.log(bodyMg());
+                editFlg = 1;
             }
 
             
-            if(EditFlg){
+            if(editFlg){
                 
                 res.render('posts/edit', {post: tmpposts, id: req.body.id}); //edit画面再表示
             }//titleとbodyに変更があったときページ遷移する
@@ -100,3 +119,14 @@ exports.destroy = function(req, res, next){
         
     }
 }; 
+
+let titleMg = function(){
+    const tmg = "titleを入力もしくは変更してください"
+    return tmg;
+}
+
+let bodyMg = function(){
+    const bmg = "bodyを入力もしくは変更してください"
+    return bmg;
+}
+
