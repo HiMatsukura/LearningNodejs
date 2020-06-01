@@ -56,7 +56,7 @@ exports.pre = function(req, res, next){
     //新規登録画面の時
     if(req.params.id === undefined){
 
-        if(addCheck(req.body.title, req.body.body)){
+        if(check(req.body.title, req.body.body, 0, 0)){
             res.render('posts/new', {post: tmpposts, id: "create"}); //新規登録画面再表示
         }//titleとbodyに入力があったときページ遷移する
         else{
@@ -72,7 +72,7 @@ exports.pre = function(req, res, next){
             next(new Error('ID not valid'));    
         }else{
             
-            if(editCheck(req.body.title, req.body.body, posts[req.params.id].title, posts[req.params.id].body)){
+            if(check(req.body.title, req.body.body, posts[req.params.id].title, posts[req.params.id].body)){
                 
                 res.render('posts/edit', {post: tmpposts, id: req.body.id}); //edit画面再表示
             }//titleとbodyに変更があったときページ遷移する
@@ -94,51 +94,30 @@ exports.destroy = function(req, res, next){
             res.redirect('/');
         
     }
-}; 
+};
 
-let addCheck = function(title, body){
+let check = function(title, body, oldTitle, oldBody){
 
-    let addFlg = 0;
+    let checkFlg = 0;
 
-    const tmg = "titleを入力してください"
-    const bmg = "bodyを入力してください"
+    const tmg = "titleを入力または変更してください"
+    const bmg = "bodyを入力または変更してください"
     
-    if(!title){
-        addFlg = 1;
+    if(!title || title === oldTitle){
+        checkFlg = 1;
         console.log(tmg);
         
     }
 
-    if(!body){
-        addFlg = 1;
+    if(!body || body === oldBody){
+        checkFlg = 1;
         console.log(bmg);
     }
 
-    return addFlg;
+    return checkFlg;
 
 }
 
-let editCheck = function(title, body, oldTitle, oldBody){
-
-    let editFlg = 0;
-
-    const tmg = "titleを変更してください"
-    const bmg = "bodyを変更してください"
-    
-    if(title === oldTitle){
-        editFlg = 1;
-        console.log(tmg);
-        
-    }
-
-    if(body === oldBody){
-        editFlg = 1;
-        console.log(bmg);
-    }
-
-    return editFlg;
-
-}
 
 
 
