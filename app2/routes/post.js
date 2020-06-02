@@ -50,13 +50,12 @@ exports.update = function(req, res, next){
 
 exports.pre = function(req, res, next){
     
-    let editFlg = 0;
     let tmpposts = {title: req.body.title, body: req.body.body};
 
     //新規登録画面の時
     if(req.params.id === undefined){
 
-        if(check(req.body.title, req.body.body, 0, 0)){
+        if(check(req.body.title, req.body.body, null, null)){
             res.render('posts/new', {post: tmpposts, id: "create"}); //新規登録画面再表示
         }//titleとbodyに入力があったときページ遷移する
         else{
@@ -100,25 +99,42 @@ let check = function(title, body, oldTitle, oldBody){
 
     let checkFlg = 0;
 
-    const tmg = "titleを入力または変更してください"
-    const bmg = "bodyを入力または変更してください"
-    
-    if(!title || title === oldTitle){
-        checkFlg = 1;
-        console.log(tmg);
-        
-    }
+    const edittmg = "titleを変更してください"
+    const editbmg = "bodyを変更してください"
+    const addtmg = "titleは必須入力です"
+    const addbmg = "bodyは必須入力です"
 
-    if(!body || body === oldBody){
-        checkFlg = 1;
-        console.log(bmg);
+    //新規登録画面のとき
+    if(oldTitle === null && oldBody === null){
+        if(!title){
+            checkFlg = 1;
+            console.log(addtmg);
+            
+        }
+    
+        if(!body){
+            checkFlg = 1;
+            console.log(addbmg);
+        }
+    
+        
+    //編集画面のとき
+    }else{
+        if(title === oldTitle){
+            checkFlg = 1;
+            console.log(edittmg);
+            
+        }
+    
+        if(body === oldBody){
+            checkFlg = 1;
+            console.log(editbmg);
+        }
+
     }
 
     return checkFlg;
-
+    
 }
-
-
-
 
 
