@@ -1,0 +1,30 @@
+<% include ('../header' , {path: '../'}) %>
+<h1>Preview</h1>
+
+<p>この内容でよろしいですか？</p>
+<form method="post" action="/posts/<%= id %>/update?_method=PUT">
+<p><%= post.title %></p>
+<p><%= post.body %></p>
+<input type="hidden" name="title" value="<%= post.title %>">
+<input type="hidden" name="body" value="<%= post.body %>">
+<input type="hidden" name="_csrf" value="<%= csrftoken %>">
+<input type="hidden" name="id" value="<%= id %>">
+<input type="submit" name="Update" value="はい">
+<button type="button" onclick="history.back()">戻る</button>
+</form>
+
+
+
+<!--<form method="post" action="/posts/<%= id %>/edit?_method=get">
+<input type="hidden" name="title" value="<%= post.title %>">
+<input type="hidden" name="body" value="<%= post.body %>">
+<input type="hidden" name="_csrf" value="<%= csrftoken %>">
+<input type="hidden" name="id" value="<%= id %>">
+<input type="submit" name="No" value="いいえ">
+</form>-->
+
+
+
+
+
+<% include ('../footer' , {path: '../'}) %>
