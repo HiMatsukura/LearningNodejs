@@ -5,11 +5,17 @@ var posts = [
 
 ];
 
+// Twitter用
+var twitter = require("twitter");
+var fs = require("fs");
+var client = new twitter(JSON.parse(fs.readFileSync("secret.json","utf-8")));
+
 
 
 //他のファイルから関数を呼び出す
-exports.index = function(req, res){
-    res.render('posts/index' , {posts: posts}); //postsのデータをindexに受け渡す
+exports.index = async function(req, res){
+    const rtntwn = await getTweet(); //Twitter用
+    res.render('posts/index' , {posts: posts, tweets: rtntwn}); //postsのデータをindexに受け渡す
 };
 
 exports.show = function(req, res){
@@ -135,6 +141,24 @@ let check = function(title, body, oldTitle, oldBody){
 
     return checkFlg;
     
+}
+
+async function getTweet(){
+    const params ={
+        screen_name: 'nhk_seikatsu',
+        count: 10,
+        include_rts: false,
+        exclude_replies: false,
+    };
+    const getTweet = new Promise((resolve, reject) => client.get('statuses/user_timeline', params, function(error, tweets, response){
+        if(!!error){ //trueかfalseを返すには二重否定にする
+            reject("error");
+        }
+            resolve(tweets);
+    }));
+    const rtn = await getTweet;
+    console.log(rtn);
+    return rtn;
 }
 
 
