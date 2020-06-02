@@ -19,13 +19,20 @@
 <p><a href="/posts/new">Add new</a></p>
 <br><br><br>
 <h1>Twitter</h1>
-<ul>
-	<% for (var i=0; i<tweets2.length; i++) { %>
-		<li>
-			<%= tweets2[i].text %></a>
-		</li>
+<img src="<%= tweets[0].user.profile_image_url_https %>">
+<%= tweets[0].user.name %>(@<%= tweets[0].user.screen_name %>)のタイムラインです<br>
+最新の10件を取得しています
+<table width=1000>
+	<% for (var i=0; i<tweets.length; i++) { %>
+		<tr>
+			<td rowspan=2>　</td>
+			<td style="text-align:center;">------------------------------------------------------------------------------------------------------------------------------------------------</td>
+		</tr>
+		<tr>
+			<td><%= tweets[i].text %></td>
+		<tr>
 	<% } %>
-</ul>
+</table>
 <script>
 	function delconfirm(){
 	    <!-- cinfirmで本当に削除するか確認する -->

@@ -8,9 +8,9 @@ var twitter = require("twitter");
 var fs = require("fs");
 var client = new twitter(JSON.parse(fs.readFileSync("secret.json","utf-8")));
 
-exports.index = function(req, res) {
-    let tweets1 = getTweet();
-    res.render('posts/index', {posts: posts, tweets2: tweets1});
+exports.index = async function(req, res) {
+    const rtntw = await getTweet();
+    res.render('posts/index', {posts: posts, tweets: rtntw});
 };
 exports.show = function(req, res) {
     res.render('posts/show', {post: posts[req.params.id]});
@@ -25,16 +25,6 @@ exports.update = function(req, res, next) {
     if(req.body.id !== req.params.id){
         next(new Error('ID not valid'));
     } else {
-        // 【title と body の変更確認処理の追加】
-        // 
-        // ・以下どちらか、またはその両方が当てはまる場合、コンソールにその旨を表示すること
-        // ① title に変更がなかった
-        // ② body  に変更がなかった
-        // 
-        // ・変更のない箇所があった場合、画面入力値はそのままに、Edit画面を再度表示すること
-        //  Ex) title部をtitle0 → title0--1 に変更して、bodyはbody0のままupdateボタンが押下されたとき、
-        //      Edit画面が再表示され、テキストボックス内の表示はそれぞれ「title0--1」、「body0」であること。
-        // 
         // エラーフラグの追加
         let modflg = 0;
         // ユーザ入力値保持のための変数を定義
@@ -107,25 +97,19 @@ let brankcheck = function(strt, strb){
 };
 
 
-function getTweet() {
-    let params = {
+async function getTweet() {
+    const params = {
       screen_name: 'nhk_seikatsu',
       count: 10,
       include_rts: false,
       exclude_replies: true
     };
-    let rtntw = [];
-    client.get('statuses/user_timeline', params, function(error, tweets, response) {
-      if (!error) {
-        for (let i = 0; i < tweets.length; i++) {
-          console.log(tweets[i].text);
-          fs.appendFileSync("timeline.json",JSON.stringify(tweets[i].text) + "\n","utf-8");
-          rtntw = {text: tweets[i].text};
-        }
-      } else {
-        console.log(error);
+    const getTweet = new Promise((resolve, reject) => client.get('statuses/user_timeline', params, function(error, tweets, response) {
+      if(!!error) {
+        reject("error");
       }
-    });
-    //const rtntw = JSON.parse(fs.readFileSync("timeline.json","utf-8"));
-    return rtntw;
+        resolve(tweets);
+    }));
+    const rtn = await getTweet;
+    return rtn;
   }

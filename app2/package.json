@@ -20,5 +20,12 @@
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
     "twitter": "^1.7.1"
+  },
+  "devDependencies": {
+    "airbnb": "0.0.2",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0"
   }
 }
